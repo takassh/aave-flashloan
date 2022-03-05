@@ -5,19 +5,19 @@
 import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
 import type {
-  ILendingPoolAddressesProvider,
-  ILendingPoolAddressesProviderInterface,
-} from "../ILendingPoolAddressesProvider";
+  IPoolAddressesProvider,
+  IPoolAddressesProviderInterface,
+} from "../IPoolAddressesProvider";
 
 const _abi = [
   {
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "bytes32",
-        name: "id",
-        type: "bytes32",
+        indexed: true,
+        internalType: "address",
+        name: "oldAddress",
+        type: "address",
       },
       {
         indexed: true,
@@ -25,11 +25,49 @@ const _abi = [
         name: "newAddress",
         type: "address",
       },
+    ],
+    name: "ACLAdminUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
       {
-        indexed: false,
-        internalType: "bool",
-        name: "hasProxy",
-        type: "bool",
+        indexed: true,
+        internalType: "address",
+        name: "oldAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newAddress",
+        type: "address",
+      },
+    ],
+    name: "ACLManagerUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "id",
+        type: "bytes32",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "oldAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newAddress",
+        type: "address",
       },
     ],
     name: "AddressSet",
@@ -40,84 +78,43 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "address",
-        name: "newAddress",
-        type: "address",
+        internalType: "bytes32",
+        name: "id",
+        type: "bytes32",
       },
-    ],
-    name: "ConfigurationAdminUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
       {
         indexed: true,
         internalType: "address",
-        name: "newAddress",
+        name: "proxyAddress",
         type: "address",
       },
-    ],
-    name: "EmergencyAdminUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "newAddress",
-        type: "address",
-      },
-    ],
-    name: "LendingPoolCollateralManagerUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "newAddress",
-        type: "address",
-      },
-    ],
-    name: "LendingPoolConfiguratorUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "newAddress",
-        type: "address",
-      },
-    ],
-    name: "LendingPoolUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "newAddress",
-        type: "address",
-      },
-    ],
-    name: "LendingRateOracleUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
       {
         indexed: false,
+        internalType: "address",
+        name: "oldImplementationAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newImplementationAddress",
+        type: "address",
+      },
+    ],
+    name: "AddressSetAsProxy",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "string",
+        name: "oldMarketId",
+        type: "string",
+      },
+      {
+        indexed: true,
         internalType: "string",
         name: "newMarketId",
         type: "string",
@@ -132,6 +129,88 @@ const _abi = [
       {
         indexed: true,
         internalType: "address",
+        name: "oldAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newAddress",
+        type: "address",
+      },
+    ],
+    name: "PoolConfiguratorUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "oldAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newAddress",
+        type: "address",
+      },
+    ],
+    name: "PoolDataProviderUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "oldAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newAddress",
+        type: "address",
+      },
+    ],
+    name: "PoolUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "oldAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "newAddress",
+        type: "address",
+      },
+    ],
+    name: "PriceOracleSentinelUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "oldAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
         name: "newAddress",
         type: "address",
       },
@@ -143,7 +222,7 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: "bytes32",
         name: "id",
         type: "bytes32",
@@ -151,12 +230,44 @@ const _abi = [
       {
         indexed: true,
         internalType: "address",
-        name: "newAddress",
+        name: "proxyAddress",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "implementationAddress",
         type: "address",
       },
     ],
     name: "ProxyCreated",
     type: "event",
+  },
+  {
+    inputs: [],
+    name: "getACLAdmin",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getACLManager",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
   },
   {
     inputs: [
@@ -167,71 +278,6 @@ const _abi = [
       },
     ],
     name: "getAddress",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getEmergencyAdmin",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getLendingPool",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getLendingPoolCollateralManager",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getLendingPoolConfigurator",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getLendingRateOracle",
     outputs: [
       {
         internalType: "address",
@@ -257,7 +303,33 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "getPoolAdmin",
+    name: "getPool",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getPoolConfigurator",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getPoolDataProvider",
     outputs: [
       {
         internalType: "address",
@@ -279,6 +351,45 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getPriceOracleSentinel",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newAclAdmin",
+        type: "address",
+      },
+    ],
+    name: "setACLAdmin",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newAclManager",
+        type: "address",
+      },
+    ],
+    name: "setACLManager",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -308,7 +419,7 @@ const _abi = [
       },
       {
         internalType: "address",
-        name: "impl",
+        name: "newImplementationAddress",
         type: "address",
       },
     ],
@@ -320,73 +431,8 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "admin",
-        type: "address",
-      },
-    ],
-    name: "setEmergencyAdmin",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "manager",
-        type: "address",
-      },
-    ],
-    name: "setLendingPoolCollateralManager",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "configurator",
-        type: "address",
-      },
-    ],
-    name: "setLendingPoolConfiguratorImpl",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "pool",
-        type: "address",
-      },
-    ],
-    name: "setLendingPoolImpl",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "lendingRateOracle",
-        type: "address",
-      },
-    ],
-    name: "setLendingRateOracle",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "string",
-        name: "marketId",
+        name: "newMarketId",
         type: "string",
       },
     ],
@@ -399,11 +445,11 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "admin",
+        name: "newPoolConfiguratorImpl",
         type: "address",
       },
     ],
-    name: "setPoolAdmin",
+    name: "setPoolConfiguratorImpl",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -412,7 +458,33 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "priceOracle",
+        name: "newDataProvider",
+        type: "address",
+      },
+    ],
+    name: "setPoolDataProvider",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newPoolImpl",
+        type: "address",
+      },
+    ],
+    name: "setPoolImpl",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newPriceOracle",
         type: "address",
       },
     ],
@@ -421,21 +493,34 @@ const _abi = [
     stateMutability: "nonpayable",
     type: "function",
   },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "newPriceOracleSentinel",
+        type: "address",
+      },
+    ],
+    name: "setPriceOracleSentinel",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ];
 
-export class ILendingPoolAddressesProvider__factory {
+export class IPoolAddressesProvider__factory {
   static readonly abi = _abi;
-  static createInterface(): ILendingPoolAddressesProviderInterface {
-    return new utils.Interface(_abi) as ILendingPoolAddressesProviderInterface;
+  static createInterface(): IPoolAddressesProviderInterface {
+    return new utils.Interface(_abi) as IPoolAddressesProviderInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): ILendingPoolAddressesProvider {
+  ): IPoolAddressesProvider {
     return new Contract(
       address,
       _abi,
       signerOrProvider
-    ) as ILendingPoolAddressesProvider;
+    ) as IPoolAddressesProvider;
   }
 }

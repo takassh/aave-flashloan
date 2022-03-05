@@ -17,21 +17,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
-      name: "FlashLoanReceiverBase",
+      name: "IFlashLoanSimpleReceiver",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.FlashLoanReceiverBase__factory>;
+    ): Promise<Contracts.IFlashLoanSimpleReceiver__factory>;
     getContractFactory(
-      name: "IFlashLoanReceiver",
+      name: "IPool",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IFlashLoanReceiver__factory>;
+    ): Promise<Contracts.IPool__factory>;
     getContractFactory(
-      name: "ILendingPool",
+      name: "IPoolAddressesProvider",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ILendingPool__factory>;
-    getContractFactory(
-      name: "ILendingPoolAddressesProvider",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ILendingPoolAddressesProvider__factory>;
+    ): Promise<Contracts.IPoolAddressesProvider__factory>;
     getContractFactory(
       name: "IUniswapV2Router01",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -41,13 +37,9 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IUniswapV2Router02__factory>;
     getContractFactory(
-      name: "V2FlashLoan",
+      name: "V3FlashLoan",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.V2FlashLoan__factory>;
-    getContractFactory(
-      name: "V2Swap",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.V2Swap__factory>;
+    ): Promise<Contracts.V3FlashLoan__factory>;
 
     getContractAt(
       name: "IERC20",
@@ -55,25 +47,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
     getContractAt(
-      name: "FlashLoanReceiverBase",
+      name: "IFlashLoanSimpleReceiver",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.FlashLoanReceiverBase>;
+    ): Promise<Contracts.IFlashLoanSimpleReceiver>;
     getContractAt(
-      name: "IFlashLoanReceiver",
+      name: "IPool",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IFlashLoanReceiver>;
+    ): Promise<Contracts.IPool>;
     getContractAt(
-      name: "ILendingPool",
+      name: "IPoolAddressesProvider",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ILendingPool>;
-    getContractAt(
-      name: "ILendingPoolAddressesProvider",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ILendingPoolAddressesProvider>;
+    ): Promise<Contracts.IPoolAddressesProvider>;
     getContractAt(
       name: "IUniswapV2Router01",
       address: string,
@@ -85,15 +72,10 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IUniswapV2Router02>;
     getContractAt(
-      name: "V2FlashLoan",
+      name: "V3FlashLoan",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.V2FlashLoan>;
-    getContractAt(
-      name: "V2Swap",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.V2Swap>;
+    ): Promise<Contracts.V3FlashLoan>;
 
     // default types
     getContractFactory(

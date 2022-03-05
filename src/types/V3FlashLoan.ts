@@ -17,50 +17,53 @@ import { FunctionFragment, Result } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export interface IFlashLoanReceiverInterface extends utils.Interface {
-  contractName: "IFlashLoanReceiver";
+export interface V3FlashLoanInterface extends utils.Interface {
+  contractName: "V3FlashLoan";
   functions: {
     "ADDRESSES_PROVIDER()": FunctionFragment;
-    "LENDING_POOL()": FunctionFragment;
-    "executeOperation(address[],uint256[],uint256[],address,bytes)": FunctionFragment;
+    "POOL()": FunctionFragment;
+    "executeOperation(address,uint256,uint256,address,bytes)": FunctionFragment;
+    "myFlashLoanCall(address,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "ADDRESSES_PROVIDER",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "LENDING_POOL",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: "POOL", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "executeOperation",
-    values: [string[], BigNumberish[], BigNumberish[], string, BytesLike]
+    values: [string, BigNumberish, BigNumberish, string, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "myFlashLoanCall",
+    values: [string, BigNumberish]
   ): string;
 
   decodeFunctionResult(
     functionFragment: "ADDRESSES_PROVIDER",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "POOL", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "LENDING_POOL",
+    functionFragment: "executeOperation",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "executeOperation",
+    functionFragment: "myFlashLoanCall",
     data: BytesLike
   ): Result;
 
   events: {};
 }
 
-export interface IFlashLoanReceiver extends BaseContract {
-  contractName: "IFlashLoanReceiver";
+export interface V3FlashLoan extends BaseContract {
+  contractName: "V3FlashLoan";
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: IFlashLoanReceiverInterface;
+  interface: V3FlashLoanInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -84,44 +87,62 @@ export interface IFlashLoanReceiver extends BaseContract {
   functions: {
     ADDRESSES_PROVIDER(overrides?: CallOverrides): Promise<[string]>;
 
-    LENDING_POOL(overrides?: CallOverrides): Promise<[string]>;
+    POOL(overrides?: CallOverrides): Promise<[string]>;
 
     executeOperation(
-      assets: string[],
-      amounts: BigNumberish[],
-      premiums: BigNumberish[],
+      asset: string,
+      amount: BigNumberish,
+      premium: BigNumberish,
       initiator: string,
       params: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    myFlashLoanCall(
+      _asset: string,
+      _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
 
   ADDRESSES_PROVIDER(overrides?: CallOverrides): Promise<string>;
 
-  LENDING_POOL(overrides?: CallOverrides): Promise<string>;
+  POOL(overrides?: CallOverrides): Promise<string>;
 
   executeOperation(
-    assets: string[],
-    amounts: BigNumberish[],
-    premiums: BigNumberish[],
+    asset: string,
+    amount: BigNumberish,
+    premium: BigNumberish,
     initiator: string,
     params: BytesLike,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  myFlashLoanCall(
+    _asset: string,
+    _amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
     ADDRESSES_PROVIDER(overrides?: CallOverrides): Promise<string>;
 
-    LENDING_POOL(overrides?: CallOverrides): Promise<string>;
+    POOL(overrides?: CallOverrides): Promise<string>;
 
     executeOperation(
-      assets: string[],
-      amounts: BigNumberish[],
-      premiums: BigNumberish[],
+      asset: string,
+      amount: BigNumberish,
+      premium: BigNumberish,
       initiator: string,
       params: BytesLike,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    myFlashLoanCall(
+      _asset: string,
+      _amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {};
@@ -129,14 +150,20 @@ export interface IFlashLoanReceiver extends BaseContract {
   estimateGas: {
     ADDRESSES_PROVIDER(overrides?: CallOverrides): Promise<BigNumber>;
 
-    LENDING_POOL(overrides?: CallOverrides): Promise<BigNumber>;
+    POOL(overrides?: CallOverrides): Promise<BigNumber>;
 
     executeOperation(
-      assets: string[],
-      amounts: BigNumberish[],
-      premiums: BigNumberish[],
+      asset: string,
+      amount: BigNumberish,
+      premium: BigNumberish,
       initiator: string,
       params: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    myFlashLoanCall(
+      _asset: string,
+      _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -146,14 +173,20 @@ export interface IFlashLoanReceiver extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    LENDING_POOL(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    POOL(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     executeOperation(
-      assets: string[],
-      amounts: BigNumberish[],
-      premiums: BigNumberish[],
+      asset: string,
+      amount: BigNumberish,
+      premium: BigNumberish,
       initiator: string,
       params: BytesLike,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    myFlashLoanCall(
+      _asset: string,
+      _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

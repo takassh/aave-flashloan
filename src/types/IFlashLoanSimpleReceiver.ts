@@ -17,35 +17,29 @@ import { FunctionFragment, Result } from "@ethersproject/abi";
 import { Listener, Provider } from "@ethersproject/providers";
 import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 
-export interface FlashLoanReceiverBaseInterface extends utils.Interface {
-  contractName: "FlashLoanReceiverBase";
+export interface IFlashLoanSimpleReceiverInterface extends utils.Interface {
+  contractName: "IFlashLoanSimpleReceiver";
   functions: {
     "ADDRESSES_PROVIDER()": FunctionFragment;
-    "LENDING_POOL()": FunctionFragment;
-    "executeOperation(address[],uint256[],uint256[],address,bytes)": FunctionFragment;
+    "POOL()": FunctionFragment;
+    "executeOperation(address,uint256,uint256,address,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(
     functionFragment: "ADDRESSES_PROVIDER",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "LENDING_POOL",
-    values?: undefined
-  ): string;
+  encodeFunctionData(functionFragment: "POOL", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "executeOperation",
-    values: [string[], BigNumberish[], BigNumberish[], string, BytesLike]
+    values: [string, BigNumberish, BigNumberish, string, BytesLike]
   ): string;
 
   decodeFunctionResult(
     functionFragment: "ADDRESSES_PROVIDER",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "LENDING_POOL",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "POOL", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "executeOperation",
     data: BytesLike
@@ -54,13 +48,13 @@ export interface FlashLoanReceiverBaseInterface extends utils.Interface {
   events: {};
 }
 
-export interface FlashLoanReceiverBase extends BaseContract {
-  contractName: "FlashLoanReceiverBase";
+export interface IFlashLoanSimpleReceiver extends BaseContract {
+  contractName: "IFlashLoanSimpleReceiver";
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
 
-  interface: FlashLoanReceiverBaseInterface;
+  interface: IFlashLoanSimpleReceiverInterface;
 
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
@@ -84,12 +78,12 @@ export interface FlashLoanReceiverBase extends BaseContract {
   functions: {
     ADDRESSES_PROVIDER(overrides?: CallOverrides): Promise<[string]>;
 
-    LENDING_POOL(overrides?: CallOverrides): Promise<[string]>;
+    POOL(overrides?: CallOverrides): Promise<[string]>;
 
     executeOperation(
-      assets: string[],
-      amounts: BigNumberish[],
-      premiums: BigNumberish[],
+      asset: string,
+      amount: BigNumberish,
+      premium: BigNumberish,
       initiator: string,
       params: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -98,12 +92,12 @@ export interface FlashLoanReceiverBase extends BaseContract {
 
   ADDRESSES_PROVIDER(overrides?: CallOverrides): Promise<string>;
 
-  LENDING_POOL(overrides?: CallOverrides): Promise<string>;
+  POOL(overrides?: CallOverrides): Promise<string>;
 
   executeOperation(
-    assets: string[],
-    amounts: BigNumberish[],
-    premiums: BigNumberish[],
+    asset: string,
+    amount: BigNumberish,
+    premium: BigNumberish,
     initiator: string,
     params: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -112,12 +106,12 @@ export interface FlashLoanReceiverBase extends BaseContract {
   callStatic: {
     ADDRESSES_PROVIDER(overrides?: CallOverrides): Promise<string>;
 
-    LENDING_POOL(overrides?: CallOverrides): Promise<string>;
+    POOL(overrides?: CallOverrides): Promise<string>;
 
     executeOperation(
-      assets: string[],
-      amounts: BigNumberish[],
-      premiums: BigNumberish[],
+      asset: string,
+      amount: BigNumberish,
+      premium: BigNumberish,
       initiator: string,
       params: BytesLike,
       overrides?: CallOverrides
@@ -129,12 +123,12 @@ export interface FlashLoanReceiverBase extends BaseContract {
   estimateGas: {
     ADDRESSES_PROVIDER(overrides?: CallOverrides): Promise<BigNumber>;
 
-    LENDING_POOL(overrides?: CallOverrides): Promise<BigNumber>;
+    POOL(overrides?: CallOverrides): Promise<BigNumber>;
 
     executeOperation(
-      assets: string[],
-      amounts: BigNumberish[],
-      premiums: BigNumberish[],
+      asset: string,
+      amount: BigNumberish,
+      premium: BigNumberish,
       initiator: string,
       params: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -146,12 +140,12 @@ export interface FlashLoanReceiverBase extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    LENDING_POOL(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    POOL(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     executeOperation(
-      assets: string[],
-      amounts: BigNumberish[],
-      premiums: BigNumberish[],
+      asset: string,
+      amount: BigNumberish,
+      premium: BigNumberish,
       initiator: string,
       params: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }

@@ -5,9 +5,9 @@
 import { Contract, Signer, utils } from "ethers";
 import { Provider } from "@ethersproject/providers";
 import type {
-  IFlashLoanReceiver,
-  IFlashLoanReceiverInterface,
-} from "../IFlashLoanReceiver";
+  IFlashLoanSimpleReceiver,
+  IFlashLoanSimpleReceiverInterface,
+} from "../IFlashLoanSimpleReceiver";
 
 const _abi = [
   {
@@ -15,7 +15,7 @@ const _abi = [
     name: "ADDRESSES_PROVIDER",
     outputs: [
       {
-        internalType: "contract ILendingPoolAddressesProvider",
+        internalType: "contract IPoolAddressesProvider",
         name: "",
         type: "address",
       },
@@ -25,10 +25,10 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "LENDING_POOL",
+    name: "POOL",
     outputs: [
       {
-        internalType: "contract ILendingPool",
+        internalType: "contract IPool",
         name: "",
         type: "address",
       },
@@ -39,19 +39,19 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "address[]",
-        name: "assets",
-        type: "address[]",
+        internalType: "address",
+        name: "asset",
+        type: "address",
       },
       {
-        internalType: "uint256[]",
-        name: "amounts",
-        type: "uint256[]",
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
       },
       {
-        internalType: "uint256[]",
-        name: "premiums",
-        type: "uint256[]",
+        internalType: "uint256",
+        name: "premium",
+        type: "uint256",
       },
       {
         internalType: "address",
@@ -77,15 +77,19 @@ const _abi = [
   },
 ];
 
-export class IFlashLoanReceiver__factory {
+export class IFlashLoanSimpleReceiver__factory {
   static readonly abi = _abi;
-  static createInterface(): IFlashLoanReceiverInterface {
-    return new utils.Interface(_abi) as IFlashLoanReceiverInterface;
+  static createInterface(): IFlashLoanSimpleReceiverInterface {
+    return new utils.Interface(_abi) as IFlashLoanSimpleReceiverInterface;
   }
   static connect(
     address: string,
     signerOrProvider: Signer | Provider
-  ): IFlashLoanReceiver {
-    return new Contract(address, _abi, signerOrProvider) as IFlashLoanReceiver;
+  ): IFlashLoanSimpleReceiver {
+    return new Contract(
+      address,
+      _abi,
+      signerOrProvider
+    ) as IFlashLoanSimpleReceiver;
   }
 }
