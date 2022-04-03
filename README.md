@@ -1,4 +1,9 @@
-# start transaction
+# aave flashloan
+
+- this works on ropsten network
+
+# try v3flashloan
+
 1. set configuration on .env (RINKEBY_SERVER_URL and PRIVATE_KEY)
 1. set your wallet to have 0.09 aave (fee)
 1. just run `npx hardhat run --network rinkeby scripts/v3flashloan.ts`
