@@ -29,6 +29,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IPoolAddressesProvider__factory>;
     getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
       name: "IUniswapV2Router01",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IUniswapV2Router01__factory>;
@@ -37,9 +41,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IUniswapV2Router02__factory>;
     getContractFactory(
+      name: "V2Swap",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.V2Swap__factory>;
+    getContractFactory(
       name: "V3FlashLoan",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.V3FlashLoan__factory>;
+    getContractFactory(
+      name: "V3FlashLoanArbitrage",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.V3FlashLoanArbitrage__factory>;
 
     getContractAt(
       name: "IERC20",
@@ -62,6 +74,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IPoolAddressesProvider>;
     getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
+    getContractAt(
       name: "IUniswapV2Router01",
       address: string,
       signer?: ethers.Signer
@@ -72,10 +89,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IUniswapV2Router02>;
     getContractAt(
+      name: "V2Swap",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.V2Swap>;
+    getContractAt(
       name: "V3FlashLoan",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.V3FlashLoan>;
+    getContractAt(
+      name: "V3FlashLoanArbitrage",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.V3FlashLoanArbitrage>;
 
     // default types
     getContractFactory(
